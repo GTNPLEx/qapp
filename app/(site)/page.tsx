@@ -1,16 +1,11 @@
 import Image from 'next/image'
 import AuthForm from './components/AuthForm'
+import Logo from 'public/Logo.svg';
 
 export default function Home() {
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-md">
-    <Image
-      height="48"
-      width="48"
-      className="mx-auto w-auto"
-     src="/Logo.svg"
-      alt="logo"
-    />
+    <Image src={Logo} alt="Logo" priority={true} />
     <h2 
       className="
         mt-6 
