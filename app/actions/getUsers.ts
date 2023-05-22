@@ -1,6 +1,11 @@
 import prisma from "@/app/libs/prismadb";
 import getSession from "./getSession";
 
+interface UserCreateInput {
+  email: string;
+  password: string;
+}
+
 async function createUser(email: string, password: string) {
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -8,7 +13,12 @@ async function createUser(email: string, password: string) {
     throw new Error("Email address is already in use");
   }
 
-  const user = await prisma.user.create({ data: { email, password } });
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password,
+    } as UserCreateInput, // Type assertion to specify the correct type
+  });
 
   return user;
 }
@@ -22,22 +32,20 @@ const getUsers = async () => {
 
   try {
     const users = await prisma.user.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      },
-      where: {
-        NOT: {
-          email: session.user.email
-        }
+      orderBy: {       createdAt: 'desc'
+    },
+    where: {
+      NOT: {
+        email: session.user.email
       }
-    });
+    }
+  });
 
-    return users;
-  } catch (error: any) {
-    return [];
-  }
+  return users;
+} catch (error: any) {
+  return [];
+ }
 };
 
 export default getUsers;
-
 
