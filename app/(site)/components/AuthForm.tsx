@@ -8,7 +8,7 @@ import Button from "@/app/components/Button"
 import AuthSocialButton from "./AuthSocialButton";
 import {BsGithub, BsGoogle } from "react-icons/bs";
 import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -19,8 +19,15 @@ type FormData = {
 };
 
 const AuthForm = () => {
+  const session = useSession();
   const [variant, setVariant] = useState<Variant>('LOGIN');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (session?.status === 'authenticated') {
+      conslole.log('Authenticated')
+    }
+  }, [session?.status]);
 
   const toggleVariant = () => {
     if (variant === 'LOGIN') {
