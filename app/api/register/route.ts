@@ -31,6 +31,6 @@ export async function POST(
     return NextResponse.json(user);
     }  catch (error: any){
         console.log(error, 'REGISTRATION_ERROR');
-        return new NextResponge('Internal Error' ,{ status: 500});
+        return new NextResponse('Internal Error' ,{ status: 500});
     }
 };
