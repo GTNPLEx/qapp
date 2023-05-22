@@ -59,14 +59,14 @@ const AuthForm = () => {
       }))
       .then((callback) => {
         if (callback?.error) {
-          toast.error('Invalid credentials!');
+          toast.error('Oeps! Invalid credentials! 🤦‍♀️');
         }
 
         if (callback?.ok) {
           router.push('/conversations')
         }
       })
-      .catch(() => toast.error('Something went wrong!'))
+      .catch(() => toast.error('Oeps! Something went wrong! 🤷‍♀️'))
       .finally(() => setIsLoading(false))
     }
 
@@ -94,7 +94,7 @@ const AuthForm = () => {
     signIn(action, { redirect: false })
       .then((callback) => {
         if (callback?.error) {
-          toast.error('Invalid credentials!');
+          toast.error('Oeps! Invalid credentials! 🤦‍♀️');
         }
  if (callback?.ok) {
           router.push('/conversations')
