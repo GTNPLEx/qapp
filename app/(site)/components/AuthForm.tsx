@@ -44,11 +44,24 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-
+  
     if (variant === 'REGISTER') {
       axios.post('/api/register', data)
-      .catch(() => toast.error ('Oeps! Wat is Loos? 🤷🏼‍♀️'))
-      .finally(()=> setIsLoading(false))
+      .then(() => signIn('credentials', {
+        ...data,
+        redirect: false,
+      }))
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error('Invalid credentials!');
+        }
+
+        if (callback?.ok) {
+          router.push('/conversations')
+        }
+      })
+      .catch(() => toast.error('Something went wrong!'))
+      .finally(() => setIsLoading(false))
     }
 
     if (variant === 'LOGIN') {
@@ -56,29 +69,33 @@ const AuthForm = () => {
         ...data,
         redirect: false
       })
-      .then((callback)=> {
+      .then((callback) => {
         if (callback?.error) {
-          toast.error('Oeps Invalid credentials 🤦‍♀️');
+          toast.error('Invalid credentials!');
         }
 
-        if (callback?.ok && !callback?.error) {
-          toast.success('Yes Logged in 🙋‍♀️')
+        if (callback?.ok) {
+          router.push('/conversations')
+        }
+      })
+      .finally(() => setIsLoading(false))
+    }
+  }
+
+  const socialAction = (action: string) => {
+    setIsLoading(true);
+
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error('Invalid credentials!');
+        }
+ if (callback?.ok) {
+          router.push('/conversations')
         }
       })
       .finally(() => setIsLoading(false));
-    }
-
-    const socialAction = (action: string) => {
-      setIsLoading(true);
-      
-      
-      // NextAuth SignIn
-    }
-  };
-
-
-
-
+  }
 
   return (
     <div className="
